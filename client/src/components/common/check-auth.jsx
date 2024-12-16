@@ -1,42 +1,42 @@
-import { useLocation, Navigate }  from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 
-function CheckAuth({ isAuthenticated, user, children }) {
-   const location = useLocation();
+function  CheckAuth({ isAuthenticated, user, children }) {
+  const location = useLocation();
 
-   console.log(location.pathname, isAuthenticated);
+  console.log(location.pathname, isAuthenticated);
 
-   if(location.pathname === "/") {
-    if(!isAuthenticated){
-        return<Navigate to="/auth/login"/>;
+  if (location.pathname === "/") {
+    if (!isAuthenticated) {
+      return <Navigate to="/auth/login" />;
+    } else {
+      if (user?.role === "admin") {
+        return <Navigate to="/admin/dashboard" />;
+      } else {
+        return <Navigate to="/shop/home" />;
+      }
     }
-    else{
-        if(user?.role === "admin"){
-            return <Navigate to="/admin/dashboard"/>
-        }
-        else{
-            return <Navigate to = "/shop/home"/>
-        }
+  }
+  if (
+    !isAuthenticated &&
+    !(
+      location.pathname.includes("/login") ||
+      location.pathname.includes("/register")
+    )
+  ) {
+    return <Navigate to="/auth/login" />;
+  }
+  if (
+    isAuthenticated &&
+    (location.pathname.includes("/login") ||
+      location.pathname.includes("/register"))
+  ) {
+    if (user?.role === "admin") {
+      return <Navigate to="/admin/dashboard" />;
+    } else {
+      return <Navigate to="/shop/home" />;
     }
-   }
-   if(!isAuthenticated && !(location.pathname.includes("/login") || 
-     location.pathname.includes("register")
-)
-){
-    return <Navigate to="/auth/login"/>
-}
-if(isAuthenticated && 
-    (location.pathname.includes("/login")||
-location.pathname.includes("register"))
-){
-    if(user?.role === "admin"){
-        return <Navigate to="/admin/dashboard"/>
-    }
-    else{
-        return <Navigate to="/shop/home"/>
-    }
-
-}
-if (
+  }
+  if (
     isAuthenticated &&
     user?.role !== "admin" &&
     location.pathname.includes("admin")
@@ -53,5 +53,5 @@ if (
   }
 
   return <>{children}</>;
-   }
+}
 export default CheckAuth;

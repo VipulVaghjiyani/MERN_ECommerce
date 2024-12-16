@@ -12,10 +12,44 @@ import ShoppingHome from "./pages/shopping-view/home";
 import ShoppingCheckout from "./pages/shopping-view/checkout";
 import UnauthPage from "./pages/unAuth";
 import CheckAuth from "./components/common/check-auth";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { checkAuth } from "./store/auth-slice";
+import { Skeleton } from "@/components/ui/skeleton"
 
 function App() {
-  const isAuthenticated = false;  
-  const user =null;
+
+  const { user, isAuthenticated, isLoading } =  useSelector(
+    (state) => state.auth
+  );
+  const dispatch = useDispatch();
+  useEffect(()=>{
+    dispatch(checkAuth());
+  },[dispatch]);
+
+  if(isLoading){
+    console.log(isLoading, user);
+    return <Skeleton className="w-full h-screen bg-gray-100 flex items-center justify-center">
+    <div className="w-3/4 max-w-md space-y-4">
+      {/* Title Skeleton */}
+      <div className="h-6 bg-gray-300 rounded-md animate-pulse"></div>
+  
+      {/* Paragraph Skeleton */}
+      <div className="space-y-2">
+        <div className="h-4 bg-gray-300 rounded-md animate-pulse"></div>
+        <div className="h-4 bg-gray-300 rounded-md animate-pulse"></div>
+        <div className="h-4 bg-gray-300 rounded-md animate-pulse"></div>
+      </div>
+  
+      {/* Button Skeleton */}
+      <div className="h-10 w-32 bg-gray-300 rounded-full animate-pulse mx-auto"></div>
+    </div>
+  </Skeleton>
+  
+  
+
+  }
+
   return (
     <div className="flex flex-col overflow-hidden bg-white">
       <Routes>
