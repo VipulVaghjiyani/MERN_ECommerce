@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { checkAuth } from "./store/auth-slice";
 import { Skeleton } from "@/components/ui/skeleton"
+import AdminProducts from "./pages/admin-view/products";
 
 function App() {
 
@@ -72,6 +73,7 @@ function App() {
           }>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="orders" element={<AdminOrders />} />
+          <Route path="products" element={<AdminProducts />} />
         </Route>
 
         <Route path="/shop" element={
